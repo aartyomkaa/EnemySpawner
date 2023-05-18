@@ -5,6 +5,19 @@ public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] private Enemy _template;
 
+    private void Start()
+    {
+        EnemySpawner[] enemySpawners = GetComponentsInChildren<EnemySpawner>();
+        Vector2[] spawnersPositions = new Vector2[enemySpawners.Length];
+
+        for (int i = 0; i < enemySpawners.Length; i++)
+        {
+            spawnersPositions[i] = new Vector2(enemySpawners[i].transform.position.x, enemySpawners[i].transform.position.y);
+        }
+
+        StartCoroutine(Spawn(spawnersPositions));
+    }
+
     private IEnumerator Spawn(Vector2[] positions)
     {
         int waitSeconds = 2;
@@ -16,18 +29,5 @@ public class EnemySpawn : MonoBehaviour
 
             yield return waitForSec;
         }
-    }
-
-    private void Start()
-    {
-        EnemySpawner[] enemySpawners = FindObjectsOfType<EnemySpawner>();
-        Vector2[] spawnersPositions = new Vector2[enemySpawners.Length];
-
-        for (int i = 0; i < enemySpawners.Length; i++)
-        {
-            spawnersPositions[i] = new Vector2(enemySpawners[i].transform.position.x, enemySpawners[i].transform.position.y);
-        }
-
-        StartCoroutine(Spawn(spawnersPositions));
     }
 }
